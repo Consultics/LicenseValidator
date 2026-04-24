@@ -2,13 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
 	<id>Consultics.XrmToolBox.LicenseValidator</id>
-	<version>1.6.0</version>
+	<version>1.6.1</version>
 	<title>License Validator</title>
 	<authors>Martin Jäger, Consultics AG</authors>
 	<owners>Consultics</owners>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<license type="expression">MIT</license>
 	<projectUrl>https://github.com/Consultics/LicenseValidator</projectUrl>
+	<icon>images\icon.png</icon>
 	<description>XrmToolBox plugin that validates Dynamics 365 / Dataverse user license assignments against actual security role rights, usage data and Microsoft Graph API information. Flags underlicensed, overlicensed and inactive users with Excel export.</description>
 	<summary>Validates Dynamics 365 user license assignments against actual rights, usage and Graph data.</summary>
 	<releaseNotes>Initial public release.</releaseNotes>
@@ -18,8 +19,9 @@
 	  <dependency id="XrmToolBoxPackage" version="1.2025.7.71" />
 	</dependencies>
   </metadata>
-  <files>
-	<file src="bin\Release\LicenceValidator.dll" target="lib\net48\" />
-	<file src="bin\Release\LicenceValidator.pdb" target="lib\net48\" />
-  </files>
+	<files>
+	<file src="bin\Release\LicenceValidator.dll" target="Plugins\" />
+	<file src="bin\Release\LicenceValidator.pdb" target="Plugins\" />
+	<file src="images\icon.png" target="images\" />
+	</files>
 </package>
