@@ -1,5 +1,8 @@
 # License Validator for XrmToolBox
 
+[![NuGet](https://img.shields.io/nuget/v/Consultics.XrmToolBox.LicenseValidator.svg)](https://www.nuget.org/packages/Consultics.XrmToolBox.LicenseValidator)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/Consultics.XrmToolBox.LicenseValidator.svg)](https://www.nuget.org/packages/Consultics.XrmToolBox.LicenseValidator)
+
 An [XrmToolBox](https://www.xrmtoolbox.com/) plugin that validates Dynamics 365 / Dataverse user license assignments against actual security role rights, usage data and Microsoft Graph API information.
 
 ## Features
@@ -15,14 +18,25 @@ An [XrmToolBox](https://www.xrmtoolbox.com/) plugin that validates Dynamics 365 
 
 *(coming soon)*
 
+## Installation
+
+### Via XrmToolBox (recommended)
+1. Open XrmToolBox → **Tool Library**
+2. Search for **License Validator**
+3. Click **Install**
+
+### Via NuGet
+```
+nuget install Consultics.XrmToolBox.LicenseValidator
+```
+
 ## Getting Started
 
-1. Install [XrmToolBox](https://www.xrmtoolbox.com/)
-2. Open the **Tool Library** inside XrmToolBox
-3. Search for **License Validator** and install it
-4. Connect to your Dynamics 365 / Dataverse environment
-5. Configure Graph API credentials (Tenant ID, Client ID, Client Secret)
-6. Run the audit
+1. Connect to your Dynamics 365 / Dataverse environment
+2. Configure Graph API credentials (Tenant ID, Client ID, Client Secret)
+3. Select an audit mode (Rights only, Usage only, or Rights & Usage)
+4. Run the audit
+5. Export results to Excel
 
 ## Requirements
 
@@ -47,3 +61,11 @@ An [XrmToolBox](https://www.xrmtoolbox.com/) plugin that validates Dynamics 365 
 ## License
 
 This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
+
+## Changelog
+
+### 1.6.0
+- Renamed plugin classes for consistency (`LicenseValidatorPlugin`, `LicenseValidatorControl`)
+- Added NuGet package for XrmToolBox Plugin Store
+- Added MIT license
+- Initial public release
