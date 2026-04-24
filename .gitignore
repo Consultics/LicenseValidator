@@ -1,8 +1,22 @@
-/bin/Debug/
-/obj/Debug
-/.vs/LicenceValidator
-/.vs/LicenceValidator/
-/packages
-/packages/
-/.vs/
-/.vs
+# Build output
+bin/
+obj/
+
+# NuGet packages
+packages/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+LicenceValidator.csproj.user
+
+# NuGet output
+*.nupkg
+*.snupkg
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
