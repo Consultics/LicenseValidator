@@ -283,9 +283,9 @@ namespace LicenceValidator.Core
             if (!string.Equals(a.Graph.ActualLicenseState, "Known", StringComparison.OrdinalIgnoreCase)) { a.OverallStatus = "Recommendation only"; a.SuggestedAction = "Validate current state and compare to: " + a.FinalRecommendation.CommercialPattern; return; }
             if (string.Equals(a.CoverageStatus, "Underlicensed", StringComparison.OrdinalIgnoreCase))
             {
-                if (_config.UsageEnabledEffective && !a.Usage.HasAnyBusinessDataSignal) { a.OverallStatus = "Underlicensed (unused)"; a.SuggestedAction = "Reduce roles instead of upgrading."; }
-                else if (_config.UsageEnabledEffective && !a.Usage.HasRecentCreateOrModify && a.Usage.OwnedRecordCount > 0) { a.OverallStatus = "Underlicensed (stale usage)"; a.SuggestedAction = "Verify active need for " + a.FinalRecommendation.CommercialPattern; }
-                else { a.OverallStatus = "Underlicensed (active)"; a.SuggestedAction = "Assign/upgrade to: " + a.FinalRecommendation.CommercialPattern; }
+                if (_config.UsageEnabledEffective && !a.Usage.HasAnyBusinessDataSignal) { a.OverallStatus = "Underlicensed (unused)"; a.SuggestedAction = "Remove rights or adjust roles."; }
+                else if (_config.UsageEnabledEffective && !a.Usage.HasRecentCreateOrModify && a.Usage.OwnedRecordCount > 0) { a.OverallStatus = "Underlicensed (stale usage)"; a.SuggestedAction = "Remove rights or adjust roles – only ownership signal, no recent activity."; }
+                else { a.OverallStatus = "Underlicensed (active)"; a.SuggestedAction = "Assign or upgrade license to: " + a.FinalRecommendation.CommercialPattern; }
                 return;
             }
             if (string.Equals(a.CoverageStatus, "Review", StringComparison.OrdinalIgnoreCase))
@@ -308,12 +308,12 @@ namespace LicenceValidator.Core
             {
                 bool overlic = hints.Any(h => h.IndexOf("full base", StringComparison.OrdinalIgnoreCase) >= 0);
                 bool noUse = hints.Any(h => h.IndexOf("No business-data", StringComparison.OrdinalIgnoreCase) >= 0);
-                if (overlic && noUse) { a.OverallStatus = "Overlicensed (unused)"; a.SuggestedAction = "Downgrade or remove SKU."; }
-                else if (overlic) { a.OverallStatus = "Overlicensed"; a.SuggestedAction = "Consider downgrade to: " + a.FinalRecommendation.CommercialPattern; }
-                else if (noUse) { a.OverallStatus = "Licensed (unused)"; a.SuggestedAction = "Verify user still needs the license."; }
+                if (overlic && noUse) { a.OverallStatus = "Overlicensed (unused)"; a.SuggestedAction = "Review license / consider downgrade or removal."; }
+                else if (overlic) { a.OverallStatus = "Overlicensed"; a.SuggestedAction = "Review license / consider downgrade to: " + a.FinalRecommendation.CommercialPattern; }
+                else if (noUse) { a.OverallStatus = "Licensed (unused)"; a.SuggestedAction = "Review license / consider downgrade."; }
                 else { a.OverallStatus = "Optimization candidate"; a.SuggestedAction = "Review with the business."; }
             }
-            else { a.OverallStatus = "Covered"; a.SuggestedAction = "No immediate action."; }
+            else { a.OverallStatus = "Covered"; a.SuggestedAction = "No action required."; }
         }
 
         private static UsageTableProfile CloneProfile(UsageTableProfile s) => new UsageTableProfile

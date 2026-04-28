@@ -52,7 +52,12 @@ namespace LicenceValidator.Core
             foreach (var sku in actualSkuPartNumbers.Where(x => !string.IsNullOrWhiteSpace(x)))
             {
                 var match = LicenseNormalization.FirstOrDefault(rule => RegexHelper.IsMatch(sku, rule.Pattern));
-                normalized.Add(match != null ? match.Normalized : "Unmapped:" + sku);
+                if (match != null)
+                    normalized.Add(match.Normalized);
+                else if (BuiltInNormalization.TryGetValue(sku, out var builtIn))
+                    normalized.Add(builtIn);
+                else
+                    normalized.Add("Unmapped:" + sku);
             }
             return normalized
                 .Where(x => !x.StartsWith("Ignore:", StringComparison.OrdinalIgnoreCase))
@@ -60,6 +65,47 @@ namespace LicenceValidator.Core
                 .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
                 .ToList();
         }
+
+        private static readonly Dictionary<string, string> BuiltInNormalization = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            // Dynamics 365 base licenses
+            { "DYN365_ENTERPRISE_SALES", "SalesEnterprise" },
+            { "D365_SALES_ENT", "SalesEnterprise" },
+            { "D365_SALES_PRO", "SalesProfessional" },
+            { "DYN365_ENTERPRISE_CUSTOMER_SERVICE", "CustomerServiceEnterprise" },
+            { "D365_CUSTOMER_SERVICE_ENT", "CustomerServiceEnterprise" },
+            { "DYN365_ENTERPRISE_FIELD_SERVICE", "FieldService" },
+            { "D365_FIELD_SERVICE", "FieldService" },
+            { "DYN365_ENTERPRISE_TEAM_MEMBERS", "TeamMembers" },
+            { "D365_TEAM_MEMBERS", "TeamMembers" },
+            { "DYN365_TEAM_MEMBERS", "TeamMembers" },
+            { "Dynamics_365_for_Operations_Team_members", "TeamMembers" },
+            // Attach licenses
+            { "D365_SALES_ENT_ATTACH", "SalesAttach" },
+            { "D365_CUSTOMER_SERVICE_ENT_ATTACH", "CustomerServiceAttach" },
+            { "D365_FIELD_SERVICE_ATTACH", "FieldServiceAttach" },
+            // Non-D365 licenses (ignore for coverage evaluation)
+            { "D365_MARKETING_USER", "Ignore:Marketing" },
+            { "D365_MARKETING_APP", "Ignore:Marketing" },
+            { "VIRTUAL_AGENT_USL", "Ignore:VirtualAgent" },
+            { "POWERAUTOMATE_ATTENDED_RPA", "Ignore:PowerAutomateRPA" },
+            { "POWERAUTOMATE_UNATTENDED_RPA", "Ignore:PowerAutomateRPA" },
+            { "Microsoft_365_Copilot", "Ignore:M365Copilot" },
+            { "POWER_BI_PRO", "Ignore:PowerBI" },
+            { "POWER_BI_STANDARD", "Ignore:PowerBI" },
+            { "PBI_PREMIUM_PER_USER", "Ignore:PowerBI" },
+            { "ENTERPRISEPACK", "Ignore:Office365E3" },
+            { "ENTERPRISEPREMIUM", "Ignore:Office365E5" },
+            { "SPE_E3", "Ignore:M365E3" },
+            { "SPE_E5", "Ignore:M365E5" },
+            { "SPE_F1", "Ignore:M365F1" },
+            { "FLOW_FREE", "Ignore:PowerAutomateFree" },
+            { "POWERAPPS_VIRAL", "Ignore:PowerAppsViral" },
+            { "POWER_APPS_PER_USER", "Ignore:PowerApps" },
+            { "PROJECT_P1", "Ignore:Project" },
+            { "PROJECTPREMIUM", "Ignore:Project" },
+            { "VISIOCLIENT", "Ignore:Visio" },
+        };
 
         public RecommendationDecision EvaluateRights(UserEvidence evidence)
         {

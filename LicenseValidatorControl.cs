@@ -574,24 +574,95 @@ namespace LicenceValidator
 
         private void PopulateOverview(AuditResult result)
         {
-            var dt = new DataTable();
-            dt.Columns.Add("Property", typeof(string));
-            dt.Columns.Add("Value", typeof(string));
+            dgvOverview.Visible = false;
+
+            // Remove any previously created overview panel
+            var existing = dgvOverview.Parent.Controls["pnlOverviewSummary"];
+            if (existing != null) { dgvOverview.Parent.Controls.Remove(existing); existing.Dispose(); }
+
+            var panel = new FlowLayoutPanel
+            {
+                Name = "pnlOverviewSummary",
+                Dock = DockStyle.Fill,
+                AutoScroll = true,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                Padding = new System.Windows.Forms.Padding(12, 12, 12, 12),
+                BackColor = System.Drawing.SystemColors.Window
+            };
+
             var m = result.Metadata;
-            dt.Rows.Add("GeneratedUtc", m.GeneratedUtc.ToString("O"));
-            dt.Rows.Add("DataverseUrl", m.DataverseUrl);
-            dt.Rows.Add("AuditMode", m.AuditMode);
-            dt.Rows.Add("GraphEnabled", m.GraphEnabled.ToString());
-            dt.Rows.Add("UsageEnabled", m.UsageEnabled.ToString());
-            dt.Rows.Add("UserCount", m.UserCount.ToString());
-            dt.Rows.Add("HumanUserCount", m.HumanUserCount.ToString());
-            dt.Rows.Add("KnownLicenseStateCount", m.KnownLicenseStateCount.ToString());
-            dt.Rows.Add("", "");
-            dt.Rows.Add("--- Status Summary ---", "");
-            foreach (var grp in result.UserAudits.GroupBy(x => x.OverallStatus ?? "Unknown", StringComparer.OrdinalIgnoreCase).OrderByDescending(g => g.Count()))
-                dt.Rows.Add(grp.Key, grp.Count().ToString());
-            dgvOverview.DataSource = dt;
-            try { dgvOverview.AutoResizeColumns(); dgvOverview.Columns[0].Width = 250; } catch { }
+            var audits = result.UserAudits;
+
+            // ── Audit Info ──
+            AddSectionHeader(panel, "Audit Information");
+            AddField(panel, "Environment", m.DataverseUrl);
+            AddField(panel, "Generated (UTC)", m.GeneratedUtc.ToString("yyyy-MM-dd HH:mm:ss"));
+            AddField(panel, "Audit Mode", m.AuditMode);
+            AddField(panel, "Graph Enabled", m.GraphEnabled ? "Yes" : "No");
+            AddField(panel, "Usage Enabled", m.UsageEnabled ? "Yes" : "No");
+
+            // ── User Counts ──
+            AddSectionHeader(panel, "Users");
+            AddField(panel, "Total Users", m.UserCount.ToString());
+            AddField(panel, "Human Users", m.HumanUserCount.ToString());
+            AddField(panel, "Known License State", m.KnownLicenseStateCount.ToString());
+
+            // ── Status Breakdown ──
+            AddSectionHeader(panel, "Status Breakdown");
+            var groups = audits.GroupBy(x => x.OverallStatus ?? "Unknown", StringComparer.OrdinalIgnoreCase)
+                               .OrderByDescending(g => g.Count()).ToList();
+            foreach (var grp in groups)
+                AddField(panel, grp.Key, grp.Count().ToString());
+
+            // ── License Deficit Summary ──
+            var underlicensedActive = audits.Where(a => string.Equals(a.OverallStatus, "Underlicensed (active)", StringComparison.OrdinalIgnoreCase)).ToList();
+            if (underlicensedActive.Count > 0)
+            {
+                AddSectionHeader(panel, "Licenses to Acquire");
+                AddField(panel, "Users requiring license assignment", underlicensedActive.Count.ToString());
+
+                var byRecommendedSku = underlicensedActive
+                    .GroupBy(a => a.FinalRecommendation.CommercialPattern ?? "Unknown", StringComparer.OrdinalIgnoreCase)
+                    .OrderByDescending(g => g.Count())
+                    .ToList();
+                foreach (var grp in byRecommendedSku)
+                    AddField(panel, grp.Key, grp.Count() + (grp.Count() == 1 ? " license needed" : " licenses needed"));
+            }
+
+            // ── Savings Potential ──
+            var savingsCandidates = audits.Where(a =>
+                (a.OverallStatus ?? "").IndexOf("Overlicensed", StringComparison.OrdinalIgnoreCase) >= 0
+                || string.Equals(a.OverallStatus, "Licensed (unused)", StringComparison.OrdinalIgnoreCase)).ToList();
+            if (savingsCandidates.Count > 0)
+            {
+                AddSectionHeader(panel, "Savings Potential");
+                AddField(panel, "Users eligible for downgrade or removal", savingsCandidates.Count.ToString());
+            }
+
+            dgvOverview.Parent.Controls.Add(panel);
+        }
+
+        private static void AddSectionHeader(FlowLayoutPanel panel, string text)
+        {
+            panel.Controls.Add(new Label
+            {
+                Text = text,
+                Font = new Font(SystemFonts.DefaultFont.FontFamily, 10f, FontStyle.Bold),
+                AutoSize = true,
+                Margin = new System.Windows.Forms.Padding(0, 14, 0, 4)
+            });
+        }
+
+        private static void AddField(FlowLayoutPanel panel, string label, string value)
+        {
+            panel.Controls.Add(new Label
+            {
+                Text = label + ":   " + value,
+                Font = SystemFonts.DefaultFont,
+                AutoSize = true,
+                Margin = new System.Windows.Forms.Padding(12, 2, 0, 2)
+            });
         }
 
         private void PopulateUsersGrid(DataGridView dgv, IReadOnlyList<UserAuditResult> audits)
