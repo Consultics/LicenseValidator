@@ -7,11 +7,12 @@
 	<authors>Martin Jäger, Consultics AG</authors>
 	<owners>Consultics</owners>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<license type="expression">MIT</license>
+	<iconUrl>https://raw.githubusercontent.com/Consultics/LicenseValidator/main/images/icon.png</iconUrl>
 	<projectUrl>https://github.com/Consultics/LicenseValidator</projectUrl>
-	<iconUrl>https://consultics.ch/wp-content/uploads/2024/09/Logo-CONSULTICS.svg</iconUrl>
 	<description>XrmToolBox plugin that validates Dynamics 365 / Dataverse user license assignments against actual security role rights, usage data and Microsoft Graph API information. Flags underlicensed, overlicensed and inactive users with Excel export.</description>
 	<summary>Validates Dynamics 365 user license assignments against actual rights, usage and Graph data.</summary>
-	<releaseNotes>Initial public release.</releaseNotes>
+	<releaseNotes>v1.7.1: Improved license audit logic, Graph API integration and Excel export stability.</releaseNotes>
 	<copyright>Copyright © 2025 Martin Jäger, Consultics AG</copyright>
 	<tags>XrmToolBox Dynamics365 Dataverse License Audit Graph CRM Plugin</tags>
 	<dependencies>
