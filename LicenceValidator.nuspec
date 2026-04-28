@@ -2,17 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 	<id>Consultics.XrmToolBox.LicenseValidator</id>
-	<version>1.7.2</version>
+	<version>1.7.3</version>
 	<title>License Validator</title>
 	<authors>Martin Jäger, Consultics AG</authors>
 	<owners>Consultics</owners>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<license type="expression">MIT</license>
-	<iconUrl>https://raw.githubusercontent.com/Consultics/LicenseValidator/main/images/icon.png</iconUrl>
+	<icon>images\icon.png</icon>
+	<readme>README.md</readme>
 	<projectUrl>https://github.com/Consultics/LicenseValidator</projectUrl>
 	<description>XrmToolBox plugin that validates Dynamics 365 / Dataverse user license assignments against actual security role rights, usage data and Microsoft Graph API information. Flags underlicensed, overlicensed and inactive users with Excel export.</description>
 	<summary>Validates Dynamics 365 user license assignments against actual rights, usage and Graph data.</summary>
-	<releaseNotes>v1.7.2: Fixed NuGet package structure – third-party dependencies now correctly bundled in plugin subfolder per XrmToolBox guidelines.</releaseNotes>
+	<releaseNotes>v1.7.3: Added embedded README and icon to NuGet package; aligned fully with NuGet and XrmToolBox packaging guidelines.</releaseNotes>
 	<copyright>Copyright © 2025 Martin Jäger, Consultics AG</copyright>
 	<tags>XrmToolBox Dynamics365 Dataverse License Audit Graph CRM Plugin</tags>
 	<dependencies>
@@ -21,6 +22,8 @@
 	</metadata>
 	<files>
 	<file src="bin\Release\LicenceValidator.dll" target="lib\net48\Plugins" />
+	<file src="images\icon.png" target="images" />
+	<file src="README.md" target="" />
 	<!-- Third-party dependencies loaded via AssemblyResolveEventHandler from subfolder named after the plugin -->
 	<file src="bin\Release\ClosedXML.dll" target="lib\net48\Plugins\LicenceValidator" />
 	<file src="bin\Release\ClosedXML.Parser.dll" target="lib\net48\Plugins\LicenceValidator" />
