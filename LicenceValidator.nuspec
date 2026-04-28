@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
 	<metadata>
 	<id>Consultics.XrmToolBox.LicenseValidator</id>
-	<version>1.7.1</version>
+	<version>1.7.2</version>
 	<title>License Validator</title>
 	<authors>Martin Jäger, Consultics AG</authors>
 	<owners>Consultics</owners>
@@ -12,7 +12,7 @@
 	<projectUrl>https://github.com/Consultics/LicenseValidator</projectUrl>
 	<description>XrmToolBox plugin that validates Dynamics 365 / Dataverse user license assignments against actual security role rights, usage data and Microsoft Graph API information. Flags underlicensed, overlicensed and inactive users with Excel export.</description>
 	<summary>Validates Dynamics 365 user license assignments against actual rights, usage and Graph data.</summary>
-	<releaseNotes>v1.7.1: Improved license audit logic, Graph API integration and Excel export stability.</releaseNotes>
+	<releaseNotes>v1.7.2: Fixed NuGet package structure – third-party dependencies now correctly bundled in plugin subfolder per XrmToolBox guidelines.</releaseNotes>
 	<copyright>Copyright © 2025 Martin Jäger, Consultics AG</copyright>
 	<tags>XrmToolBox Dynamics365 Dataverse License Audit Graph CRM Plugin</tags>
 	<dependencies>
@@ -21,5 +21,32 @@
 	</metadata>
 	<files>
 	<file src="bin\Release\LicenceValidator.dll" target="lib\net48\Plugins" />
+	<!-- Third-party dependencies loaded via AssemblyResolveEventHandler from subfolder named after the plugin -->
+	<file src="bin\Release\ClosedXML.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\ClosedXML.Parser.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\DocumentFormat.OpenXml.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\DocumentFormat.OpenXml.Framework.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\ExcelNumberFormat.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Bcl.AsyncInterfaces.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Bcl.HashCode.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Extensions.AI.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Extensions.AI.Abstractions.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Extensions.Caching.Abstractions.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Extensions.DependencyInjection.Abstractions.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Extensions.Logging.Abstractions.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\Microsoft.Extensions.Primitives.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\RBush.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\SixLabors.Fonts.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Buffers.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Diagnostics.DiagnosticSource.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.IO.Packaging.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.IO.Pipelines.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Memory.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Numerics.Vectors.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Runtime.CompilerServices.Unsafe.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Text.Encodings.Web.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Text.Json.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Threading.Channels.dll" target="lib\net48\Plugins\LicenceValidator" />
+	<file src="bin\Release\System.Threading.Tasks.Extensions.dll" target="lib\net48\Plugins\LicenceValidator" />
 	</files>
 </package>
