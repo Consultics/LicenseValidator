@@ -290,10 +290,11 @@
     <Compile Include="Core\ExcelExporter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DefaultRules.json"><LogicalName>LicenceValidator.DefaultRules.json</LogicalName></EmbeddedResource><EmbeddedResource Include="LicenseValidatorControl.resx">
+    <EmbeddedResource Include="LicenseValidatorControl.resx">
       <DependentUpon>LicenseValidatorControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <EmbeddedResource Include="DefaultRules.json"><LogicalName>LicenceValidator.DefaultRules.json</LogicalName></EmbeddedResource>
     <None Include="LicenceValidator.nuspec" />
     <None Include="LICENSE" />
     <None Include="packages.config" />
@@ -332,5 +333,3 @@ IF $(ConfigurationName) == Debug (
   </Target>
   <Import Project="packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
 </Project>
-
-

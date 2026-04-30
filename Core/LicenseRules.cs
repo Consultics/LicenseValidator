@@ -15,12 +15,17 @@ namespace LicenceValidator.Core
         public List<string> UsageExcludeEntityPatterns { get; set; } = new List<string>();
         public List<string> UsageIncludeEntityPatterns { get; set; } = new List<string>();
 
-        private static readonly JsonSerializerOptions Relaxed = new JsonSerializerOptions
+        private static readonly JsonSerializerOptions Relaxed = CreateRelaxedOptions();
+
+        private static JsonSerializerOptions CreateRelaxedOptions()
         {
-            PropertyNameCaseInsensitive = true,
-            ReadCommentHandling = JsonCommentHandling.Skip,
-            AllowTrailingCommas = true
-        };
+            return new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                AllowTrailingCommas = true
+            };
+        }
 
         public static Ruleset Load(string path)
         {
@@ -113,8 +118,6 @@ namespace LicenceValidator.Core
             // Copilot / AI add-ons
             { "CCIBOTS_PRIVPREV_VIRAL", "Ignore:CopilotStudioTrial" },
             { "COPILOT_STUDIO_VIRAL", "Ignore:CopilotStudioTrial" },
-            { "POWERAUTOMATE_ATTENDED_RPA", "Ignore:PowerAutomateRPA" },
-            { "POWERAUTOMATE_UNATTENDED_RPA", "Ignore:PowerAutomateRPA" },
             // Teams / misc
             { "TEAMS_ESSENTIALS", "Ignore:TeamsEssentials" },
             { "MCOCAP", "Ignore:TeamsPhone" },

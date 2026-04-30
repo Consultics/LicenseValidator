@@ -147,6 +147,7 @@
             this.txtRulesPath.Name = "txtRulesPath";
             this.txtRulesPath.Size = new System.Drawing.Size(376, 23);
             this.txtRulesPath.TabIndex = 7;
+            this.txtRulesPath.Visible = false;
             this.tipMain.SetToolTip(this.txtRulesPath, "Path to a JSON file with license classification rules.\nLeave empty to use the bui" +
         "lt-in default ruleset.\nUse \'Edit Rules\' to modify the embedded rules.");
             // 
@@ -607,6 +608,7 @@
             this.lblRulesPath.Size = new System.Drawing.Size(62, 15);
             this.lblRulesPath.TabIndex = 6;
             this.lblRulesPath.Text = "Rules Path";
+            this.lblRulesPath.Visible = false;
             // 
             // btnBrowseRules
             // 
@@ -618,6 +620,7 @@
             this.btnBrowseRules.Size = new System.Drawing.Size(24, 23);
             this.btnBrowseRules.TabIndex = 8;
             this.btnBrowseRules.Text = "...";
+            this.btnBrowseRules.Visible = false;
             this.btnBrowseRules.Click += new System.EventHandler(this.btnBrowseRules_Click);
             // 
             // btnEditRuleset

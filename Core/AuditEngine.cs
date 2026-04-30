@@ -87,7 +87,7 @@ namespace LicenceValidator.Core
             {
                 Metadata = new AuditMetadata
                 {
-                    GeneratedUtc = DateTime.UtcNow, DataverseUrl = _config.DataverseUrl, RulesPath = _config.RulesPath,
+                    GeneratedUtc = DateTime.UtcNow, DataverseUrl = _config.DataverseUrl,
                     AuditMode = _config.AuditMode,
                     RecommendationModeUsed = _config.UsageEnabledEffective ? _config.EffectiveRecommendationMode : RecommendationModes.Rights,
                     GraphEnabled = _config.GraphEnabled, IncludeDisabledUsers = _config.IncludeDisabledUsers,

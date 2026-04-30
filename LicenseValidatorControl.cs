@@ -45,6 +45,13 @@ namespace LicenceValidator
                 MigrateOldSettings();
             }
 
+            // Ensure every profile has EmbeddedRulesetJson initialised with defaults
+            foreach (var profile in mySettings.Profiles)
+            {
+                if (string.IsNullOrWhiteSpace(mySettings.EmbeddedRulesetJson))
+                    mySettings.EmbeddedRulesetJson = LoadDefaultRulesFromResource();
+            }
+
             RefreshProfileComboBox();
             LoadProfileToUi(mySettings.GetActiveProfile());
         }
@@ -230,7 +237,6 @@ namespace LicenceValidator
             txtTenantId.Text = p.TenantId ?? "";
             txtClientId.Text = p.ClientId ?? "";
             txtClientSecret.Text = p.ClientSecret ?? "";
-            txtRulesPath.Text = p.RulesPath ?? "";
             cboAuditMode.SelectedItem = p.AuditMode ?? "RightsAndUsage";
             if (cboAuditMode.SelectedIndex < 0) cboAuditMode.SelectedItem = "RightsAndUsage";
             chkIncludeDisabledUsers.Checked = p.IncludeDisabledUsers;
@@ -264,7 +270,6 @@ namespace LicenceValidator
             p.TenantId = txtTenantId.Text.Trim();
             p.ClientId = txtClientId.Text.Trim();
             p.ClientSecret = txtClientSecret.Text.Trim();
-            p.RulesPath = txtRulesPath.Text.Trim();
             p.AuditMode = cboAuditMode.SelectedItem?.ToString() ?? "RightsAndUsage";
             p.IncludeDisabledUsers = chkIncludeDisabledUsers.Checked;
             p.MaxDegreeOfParallelism = (int)nudParallelism.Value;
@@ -299,7 +304,6 @@ namespace LicenceValidator
                 ClientId = p.ClientId,
                 ClientSecret = p.ClientSecret,
                 DataverseUrl = ConnectionDetail?.WebApplicationUrl ?? mySettings?.LastUsedOrganizationWebappUrl ?? string.Empty,
-                RulesPath = p.RulesPath,
                 AuditMode = p.AuditMode,
                 IncludeDisabledUsers = p.IncludeDisabledUsers,
                 MaxDegreeOfParallelism = p.MaxDegreeOfParallelism,
@@ -325,16 +329,12 @@ namespace LicenceValidator
         {
             var json = mySettings.EmbeddedRulesetJson ?? "";
 
-            // Load from file if specified
-            if (string.IsNullOrWhiteSpace(json) && !string.IsNullOrWhiteSpace(txtRulesPath.Text) && File.Exists(txtRulesPath.Text))
-            {
-                json = File.ReadAllText(txtRulesPath.Text);
-            }
-
-            // Fall back to embedded default rules
-            if (string.IsNullOrWhiteSpace(json))
+            // Fall back to built-in defaults if empty or trivially empty JSON ({} or whitespace)
+            if (string.IsNullOrWhiteSpace(json) || IsEmptyJson(json))
             {
                 json = LoadDefaultRulesFromResource();
+                mySettings.EmbeddedRulesetJson = json;
+                SaveSettings();
             }
 
             // Pretty-print JSON
@@ -444,22 +444,19 @@ namespace LicenceValidator
                 }
             }
 
-            // Resolve rules: file path â†’ embedded â†’ built-in defaults
+            // Resolve rules: settings -> built-in defaults
             string rulesJson = null;
             string rulesSource = null;
-            if (!string.IsNullOrWhiteSpace(config.RulesPath) && File.Exists(config.RulesPath))
-            {
-                rulesJson = File.ReadAllText(config.RulesPath);
-                rulesSource = config.RulesPath;
-            }
-            else if (!string.IsNullOrWhiteSpace(mySettings.EmbeddedRulesetJson))
+            if (!string.IsNullOrWhiteSpace(mySettings.EmbeddedRulesetJson) && !IsEmptyJson(mySettings.EmbeddedRulesetJson))
             {
                 rulesJson = mySettings.EmbeddedRulesetJson;
-                rulesSource = "(embedded)";
+                rulesSource = "(settings)";
             }
             else
             {
                 rulesJson = LoadDefaultRulesFromResource();
+                mySettings.EmbeddedRulesetJson = rulesJson;
+                SaveSettings();
                 rulesSource = "(built-in defaults)";
             }
 
@@ -555,15 +552,7 @@ namespace LicenceValidator
             }
         }
 
-        private void btnBrowseRules_Click(object sender, EventArgs e)
-        {
-            using (var dlg = new OpenFileDialog())
-            {
-                dlg.Title = "Select license rules JSON file";
-                dlg.Filter = "JSON Files|*.json|All Files|*.*";
-                if (dlg.ShowDialog() == DialogResult.OK) txtRulesPath.Text = dlg.FileName;
-            }
-        }
+        private void btnBrowseRules_Click(object sender, EventArgs e) { /* removed – rules are managed in Settings */ }
 
         // â”€â”€ Result tabs â”€â”€
 
@@ -814,6 +803,25 @@ namespace LicenceValidator
                 using (var reader = new StreamReader(stream))
                     return reader.ReadToEnd();
             }
+        }
+
+        private static bool IsEmptyJson(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json)) return true;
+            var trimmed = json.Trim();
+            if (trimmed == "{}" || trimmed == "{ }") return true;
+            try
+            {
+                using (var doc = System.Text.Json.JsonDocument.Parse(trimmed))
+                {
+                    var root = doc.RootElement;
+                    // Check if all relevant arrays are empty or missing
+                    bool hasRules = root.TryGetProperty("RecommendationRules", out var rr) && rr.GetArrayLength() > 0;
+                    bool hasProfiles = root.TryGetProperty("UsageTableProfiles", out var up) && up.GetArrayLength() > 0;
+                    return !hasRules && !hasProfiles;
+                }
+            }
+            catch { return true; }
         }
 
         private static string FormatJson(string json)

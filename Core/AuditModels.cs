@@ -18,7 +18,6 @@ namespace LicenceValidator.Core
     {
         public DateTime GeneratedUtc { get; set; }
         public string DataverseUrl { get; set; } = string.Empty;
-        public string RulesPath { get; set; } = string.Empty;
         public string AuditMode { get; set; } = string.Empty;
         public string RecommendationModeUsed { get; set; } = string.Empty;
         public bool GraphEnabled { get; set; }

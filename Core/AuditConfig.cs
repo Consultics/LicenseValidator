@@ -34,7 +34,6 @@ namespace LicenceValidator.Core
         public string ClientSecret { get; set; } = string.Empty;
         public string DataverseUrl { get; set; } = string.Empty;
         public string GraphBaseUrl { get; set; } = "https://graph.microsoft.com/v1.0";
-        public string RulesPath { get; set; } = string.Empty;
         public string AuditMode { get; set; } = AppModes.RightsAndUsage;
         public bool IncludeDisabledUsers { get; set; }
         public int MaxDegreeOfParallelism { get; set; } = 6;

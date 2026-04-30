@@ -37,9 +37,6 @@ namespace LicenceValidator
         public string TenantId { get; set; }
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
-
-        // Audit settings
-        public string RulesPath { get; set; }
         public string AuditMode { get; set; } = "RightsAndUsage";
         public bool IncludeDisabledUsers { get; set; }
         public int MaxDegreeOfParallelism { get; set; } = 6;
