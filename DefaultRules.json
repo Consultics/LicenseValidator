@@ -1,0 +1,116 @@
+{
+  "LicenseNormalization": [],
+  "RecommendationRules": [
+    {
+      "Name": "Sales Enterprise – Sales App",
+      "Priority": 100,
+      "Capability": "SalesEnterprise",
+      "RequiredAppIds": [],
+      "RequiredPrivileges": [],
+      "RequiredRolePatterns": [ "(?i)salesperson", "(?i)sales\\s*manager", "(?i)sales\\s*enterprise" ]
+    },
+    {
+      "Name": "Sales Professional – Sales App",
+      "Priority": 90,
+      "Capability": "SalesProfessional",
+      "RequiredAppIds": [],
+      "RequiredPrivileges": [],
+      "RequiredRolePatterns": [ "(?i)sales\\s*pro" ]
+    },
+    {
+      "Name": "Customer Service Enterprise",
+      "Priority": 100,
+      "Capability": "CustomerServiceEnterprise",
+      "RequiredAppIds": [],
+      "RequiredPrivileges": [],
+      "RequiredRolePatterns": [ "(?i)customer\\s*service\\s*(representative|agent|manager|enterprise)" ]
+    },
+    {
+      "Name": "Field Service",
+      "Priority": 100,
+      "Capability": "FieldService",
+      "RequiredAppIds": [],
+      "RequiredPrivileges": [],
+      "RequiredRolePatterns": [ "(?i)field\\s*service" ]
+    },
+    {
+      "Name": "Team Members – basic roles only",
+      "Priority": 10,
+      "Capability": "TeamMembers",
+      "RequiredAppIds": [],
+      "RequiredPrivileges": [],
+      "RequiredRolePatterns": [ "(?i)team\\s*member" ]
+    }
+  ],
+  "UsageTableProfiles": [
+    {
+      "TableLogicalName": "opportunity",
+      "DisplayName": "Opportunity",
+      "Capability": "SalesEnterprise",
+      "Weight": 10
+    },
+    {
+      "TableLogicalName": "lead",
+      "DisplayName": "Lead",
+      "Capability": "SalesEnterprise",
+      "Weight": 8
+    },
+    {
+      "TableLogicalName": "quote",
+      "DisplayName": "Quote",
+      "Capability": "SalesEnterprise",
+      "Weight": 8
+    },
+    {
+      "TableLogicalName": "salesorder",
+      "DisplayName": "Order",
+      "Capability": "SalesEnterprise",
+      "Weight": 8
+    },
+    {
+      "TableLogicalName": "invoice",
+      "DisplayName": "Invoice",
+      "Capability": "SalesEnterprise",
+      "Weight": 8
+    },
+    {
+      "TableLogicalName": "incident",
+      "DisplayName": "Case",
+      "Capability": "CustomerServiceEnterprise",
+      "Weight": 10
+    },
+    {
+      "TableLogicalName": "msdyn_workorder",
+      "DisplayName": "Work Order",
+      "Capability": "FieldService",
+      "Weight": 10
+    },
+    {
+      "TableLogicalName": "msdyn_resourcebooking",
+      "DisplayName": "Resource Booking",
+      "Capability": "FieldService",
+      "Weight": 8
+    },
+    {
+      "TableLogicalName": "account",
+      "DisplayName": "Account",
+      "Capability": "TeamMembers",
+      "Weight": 2
+    },
+    {
+      "TableLogicalName": "contact",
+      "DisplayName": "Contact",
+      "Capability": "TeamMembers",
+      "Weight": 2
+    }
+  ],
+  "UsageExcludeEntityPatterns": [
+    "(?i)^systemuser$",
+    "(?i)^team$",
+    "(?i)^role$",
+    "(?i)^audit$",
+    "(?i)^plugintype",
+    "(?i)^sdkmessage"
+  ],
+  "UsageIncludeEntityPatterns": []
+}

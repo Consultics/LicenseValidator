@@ -290,7 +290,7 @@
     <Compile Include="Core\ExcelExporter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LicenseValidatorControl.resx">
+    <EmbeddedResource Include="DefaultRules.json"><LogicalName>LicenceValidator.DefaultRules.json</LogicalName></EmbeddedResource><EmbeddedResource Include="LicenseValidatorControl.resx">
       <DependentUpon>LicenseValidatorControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
