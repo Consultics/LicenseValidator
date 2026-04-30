@@ -101,10 +101,28 @@ namespace LicenceValidator.Core
             { "SPE_F1", "Ignore:M365F1" },
             { "FLOW_FREE", "Ignore:PowerAutomateFree" },
             { "POWERAPPS_VIRAL", "Ignore:PowerAppsViral" },
+            { "POWERAPPS_DEV", "Ignore:PowerAppsDev" },
             { "POWER_APPS_PER_USER", "Ignore:PowerApps" },
             { "PROJECT_P1", "Ignore:Project" },
             { "PROJECTPREMIUM", "Ignore:Project" },
             { "VISIOCLIENT", "Ignore:Visio" },
+            // Exchange / M365 add-ons
+            { "EXCHANGESTANDARD", "Ignore:ExchangeOnlineP1" },
+            { "EXCHANGEENTERPRISE", "Ignore:ExchangeOnlineP2" },
+            { "EXCHANGE_S_ESSENTIALS", "Ignore:ExchangeEssentials" },
+            // Copilot / AI add-ons
+            { "CCIBOTS_PRIVPREV_VIRAL", "Ignore:CopilotStudioTrial" },
+            { "COPILOT_STUDIO_VIRAL", "Ignore:CopilotStudioTrial" },
+            { "POWERAUTOMATE_ATTENDED_RPA", "Ignore:PowerAutomateRPA" },
+            { "POWERAUTOMATE_UNATTENDED_RPA", "Ignore:PowerAutomateRPA" },
+            // Teams / misc
+            { "TEAMS_ESSENTIALS", "Ignore:TeamsEssentials" },
+            { "MCOCAP", "Ignore:TeamsPhone" },
+            { "MCOEV", "Ignore:TeamsPhoneStandard" },
+            { "RIGHTSMANAGEMENT", "Ignore:AzureRMS" },
+            { "INTUNE_A", "Ignore:Intune" },
+            { "AAD_PREMIUM", "Ignore:EntraIDP1" },
+            { "AAD_PREMIUM_P2", "Ignore:EntraIDP2" },
         };
 
         public RecommendationDecision EvaluateRights(UserEvidence evidence)

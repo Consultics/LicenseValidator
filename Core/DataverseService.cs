@@ -157,6 +157,20 @@ namespace LicenceValidator.Core
                 {
                     _logger.Warn("Metadata not found for entity '" + ln + "'.");
                 }
+                catch (Exception ex)
+                {
+                    // Other errors (e.g. permission denied): log but still return a stub so
+                    // QueryError is set by the caller instead of silently dropping the table.
+                    _logger.Warn("Metadata retrieval failed for entity '" + ln + "': " + ex.Message);
+                    result[ln] = new DataverseEntityMetadata
+                    {
+                        LogicalName = ln,
+                        EntitySetName = ln + "s",
+                        PrimaryIdAttribute = ln + "id",
+                        IsCustomEntity = false,
+                        IsActivity = false
+                    };
+                }
             }
             return Task.FromResult(result);
         }

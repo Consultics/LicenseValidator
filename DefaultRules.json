@@ -2,7 +2,7 @@
   "LicenseNormalization": [],
   "RecommendationRules": [
     {
-      "Name": "Sales Enterprise – Sales App",
+      "Name": "Sales Enterprise - Sales App",
       "Priority": 100,
       "Capability": "SalesEnterprise",
       "RequiredAppIds": [],
@@ -10,7 +10,7 @@
       "RequiredRolePatterns": [ "(?i)salesperson", "(?i)sales\\s*manager", "(?i)sales\\s*enterprise" ]
     },
     {
-      "Name": "Sales Professional – Sales App",
+      "Name": "Sales Professional - Sales App",
       "Priority": 90,
       "Capability": "SalesProfessional",
       "RequiredAppIds": [],
@@ -34,7 +34,7 @@
       "RequiredRolePatterns": [ "(?i)field\\s*service" ]
     },
     {
-      "Name": "Team Members – basic roles only",
+      "Name": "Team Members - basic roles only",
       "Priority": 10,
       "Capability": "TeamMembers",
       "RequiredAppIds": [],
@@ -44,64 +44,94 @@
   ],
   "UsageTableProfiles": [
     {
-      "TableLogicalName": "opportunity",
+      "LogicalName": "opportunity",
       "DisplayName": "Opportunity",
       "Capability": "SalesEnterprise",
-      "Weight": 10
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "lead",
+      "LogicalName": "lead",
       "DisplayName": "Lead",
       "Capability": "SalesEnterprise",
-      "Weight": 8
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "quote",
+      "LogicalName": "quote",
       "DisplayName": "Quote",
       "Capability": "SalesEnterprise",
-      "Weight": 8
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "salesorder",
+      "LogicalName": "salesorder",
       "DisplayName": "Order",
       "Capability": "SalesEnterprise",
-      "Weight": 8
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "invoice",
+      "LogicalName": "invoice",
       "DisplayName": "Invoice",
       "Capability": "SalesEnterprise",
-      "Weight": 8
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "incident",
+      "LogicalName": "incident",
       "DisplayName": "Case",
       "Capability": "CustomerServiceEnterprise",
-      "Weight": 10
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "msdyn_workorder",
+      "LogicalName": "msdyn_workorder",
       "DisplayName": "Work Order",
       "Capability": "FieldService",
-      "Weight": 10
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "msdyn_resourcebooking",
+      "LogicalName": "msdyn_resourcebooking",
       "DisplayName": "Resource Booking",
       "Capability": "FieldService",
-      "Weight": 8
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "account",
+      "LogicalName": "account",
       "DisplayName": "Account",
       "Capability": "TeamMembers",
-      "Weight": 2
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     },
     {
-      "TableLogicalName": "contact",
+      "LogicalName": "contact",
       "DisplayName": "Contact",
       "Capability": "TeamMembers",
-      "Weight": 2
+      "CountOwned": true,
+      "CountCreated": true,
+      "CountModified": true,
+      "CountsAsBusinessSignal": true
     }
   ],
   "UsageExcludeEntityPatterns": [

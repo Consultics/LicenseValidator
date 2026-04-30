@@ -232,6 +232,7 @@ namespace LicenceValidator
             txtClientSecret.Text = p.ClientSecret ?? "";
             txtRulesPath.Text = p.RulesPath ?? "";
             cboAuditMode.SelectedItem = p.AuditMode ?? "RightsAndUsage";
+            if (cboAuditMode.SelectedIndex < 0) cboAuditMode.SelectedItem = "RightsAndUsage";
             chkIncludeDisabledUsers.Checked = p.IncludeDisabledUsers;
             SafeSetNud(nudParallelism, 1, 20, p.MaxDegreeOfParallelism);
             SafeSetNud(nudUserLimit, 0, 99999, p.UserLimit);
@@ -239,7 +240,9 @@ namespace LicenceValidator
             chkGraphOptional.Checked = p.GraphOptional;
             chkGraphFailOnError.Checked = p.GraphFailOnError;
             cboRecModeWithGraph.SelectedItem = p.RecommendationModeWithGraph ?? "RightsThenUsage";
+            if (cboRecModeWithGraph.SelectedIndex < 0) cboRecModeWithGraph.SelectedItem = "RightsThenUsage";
             cboRecModeWithoutGraph.SelectedItem = p.RecommendationModeWithoutGraph ?? "RightsThenUsage";
+            if (cboRecModeWithoutGraph.SelectedIndex < 0) cboRecModeWithoutGraph.SelectedItem = "RightsThenUsage";
             chkUsageEnabled.Checked = p.UsageEnabled;
             SafeSetNud(nudLookbackDays, 1, 9999, p.ActivityLookbackDays);
             SafeSetNud(nudOwnershipDays, 1, 9999, p.OwnershipHistoryDays);
@@ -270,7 +273,7 @@ namespace LicenceValidator
             p.GraphOptional = chkGraphOptional.Checked;
             p.GraphFailOnError = chkGraphFailOnError.Checked;
             p.RecommendationModeWithGraph = cboRecModeWithGraph.SelectedItem?.ToString() ?? "RightsThenUsage";
-            p.RecommendationModeWithoutGraph = cboRecModeWithGraph.SelectedItem?.ToString() ?? "RightsThenUsage";
+            p.RecommendationModeWithoutGraph = cboRecModeWithoutGraph.SelectedItem?.ToString() ?? "RightsThenUsage";
             p.UsageEnabled = chkUsageEnabled.Checked;
             p.ActivityLookbackDays = (int)nudLookbackDays.Value;
             p.OwnershipHistoryDays = (int)nudOwnershipDays.Value;
@@ -470,6 +473,7 @@ namespace LicenceValidator
             var logger = new UiLogger(this);
             var sw = Stopwatch.StartNew();
             AppendLog("Starting audit... (Rules: " + rulesSource + ")");
+            AppendLog($"[Config] AuditMode={config.AuditMode} | UsageEnabled={config.UsageEnabled} | UsageEnabledEffective={config.UsageEnabledEffective}");
 
             WorkAsync(new WorkAsyncInfo
             {

@@ -59,7 +59,11 @@ namespace LicenceValidator.Core
             var usageTables = new List<UsageTableProfile>();
             if (_config.UsageEnabledEffective)
             {
+                _log.Info($"[Usage] UsageTableProfiles in rules: {_rules.UsageTableProfiles.Count}, IncludePatterns: {_rules.UsageIncludeEntityPatterns.Count}");
                 usageTables = await PrepareUsageTablesAsync(ct).ConfigureAwait(false);
+                var invalidTables = usageTables.Where(t => !string.IsNullOrWhiteSpace(t.QueryError)).ToList();
+                if (invalidTables.Any())
+                    _log.Warn($"[Usage] {invalidTables.Count} table(s) skipped: " + string.Join(", ", invalidTables.Select(t => t.LogicalName + " (" + t.QueryError + ")")));
                 _log.Info("Usage tables: " + usageTables.Count(t => string.IsNullOrWhiteSpace(t.QueryError)) + " valid");
                 await AnalyzeUsageAsync(audits, usageTables, ct).ConfigureAwait(false);
             }
