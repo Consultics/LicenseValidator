@@ -2,36 +2,40 @@
   "LicenseNormalization": [],
   "RecommendationRules": [
     {
-      "Name": "Sales Enterprise - Sales App",
+      "Name": "Sales - Sales App",
       "Priority": 100,
-      "Capability": "SalesEnterprise",
+      "Capability": "SalesFull",
       "AnyAppPatterns": [],
       "AnyPrivilegePatterns": [],
-      "AnyRolePatterns": [ "(?i)salesperson", "(?i)sales\\s*manager", "(?i)sales\\s*enterprise" ]
+      "AnyRolePatterns": [ "(?i)salesperson", "(?i)sales\\s*manager", "(?i)sales\\s*(enterprise|premium|professional|pro)" ]
     },
     {
-      "Name": "Sales Professional - Sales App",
-      "Priority": 90,
-      "Capability": "SalesProfessional",
+      "Name": "Customer Service - CS roles",
+      "Priority": 100,
+      "Capability": "CustomerServiceFull",
       "AnyAppPatterns": [],
       "AnyPrivilegePatterns": [],
-      "AnyRolePatterns": [ "(?i)sales\\s*pro" ]
+      "AnyRolePatterns": [
+        "(?i)customer\\s*service\\s*(representative|agent|manager|enterprise|professional|pro)",
+        "(?i)omnichannel",
+        "(?i)crm_omni",
+        "(?i)copilot\\s*service",
+        "(?i)case\\s*manager",
+        "(?i)knowledge\\s*(manager|author)"
+      ]
     },
     {
-      "Name": "Customer Service Enterprise",
+      "Name": "Field Service - FS roles",
       "Priority": 100,
-      "Capability": "CustomerServiceEnterprise",
+      "Capability": "FieldServiceFull",
       "AnyAppPatterns": [],
       "AnyPrivilegePatterns": [],
-      "AnyRolePatterns": [ "(?i)customer\\s*service\\s*(representative|agent|manager|enterprise)" ]
-    },
-    {
-      "Name": "Field Service",
-      "Priority": 100,
-      "Capability": "FieldService",
-      "AnyAppPatterns": [],
-      "AnyPrivilegePatterns": [],
-      "AnyRolePatterns": [ "(?i)field\\s*service" ]
+      "AnyRolePatterns": [
+        "(?i)field\\s*service",
+        "(?i)dispatcher",
+        "(?i)resource\\s*(scheduling|coordinator|manager)",
+        "(?i)work\\s*order"
+      ]
     },
     {
       "Name": "Team Members - basic roles only",
@@ -46,7 +50,7 @@
     {
       "LogicalName": "opportunity",
       "DisplayName": "Opportunity",
-      "Capability": "SalesEnterprise",
+      "Capability": "SalesFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,
@@ -55,7 +59,7 @@
     {
       "LogicalName": "lead",
       "DisplayName": "Lead",
-      "Capability": "SalesEnterprise",
+      "Capability": "SalesFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,
@@ -64,7 +68,7 @@
     {
       "LogicalName": "quote",
       "DisplayName": "Quote",
-      "Capability": "SalesEnterprise",
+      "Capability": "SalesFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,
@@ -73,7 +77,7 @@
     {
       "LogicalName": "salesorder",
       "DisplayName": "Order",
-      "Capability": "SalesEnterprise",
+      "Capability": "SalesFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,
@@ -82,7 +86,7 @@
     {
       "LogicalName": "invoice",
       "DisplayName": "Invoice",
-      "Capability": "SalesEnterprise",
+      "Capability": "SalesFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,
@@ -91,7 +95,7 @@
     {
       "LogicalName": "incident",
       "DisplayName": "Case",
-      "Capability": "CustomerServiceEnterprise",
+      "Capability": "CustomerServiceFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,
@@ -100,7 +104,7 @@
     {
       "LogicalName": "msdyn_workorder",
       "DisplayName": "Work Order",
-      "Capability": "FieldService",
+      "Capability": "FieldServiceFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,
@@ -109,7 +113,7 @@
     {
       "LogicalName": "msdyn_resourcebooking",
       "DisplayName": "Resource Booking",
-      "Capability": "FieldService",
+      "Capability": "FieldServiceFull",
       "CountOwned": true,
       "CountCreated": true,
       "CountModified": true,

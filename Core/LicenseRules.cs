@@ -77,8 +77,10 @@ namespace LicenceValidator.Core
             { "DYN365_ENTERPRISE_SALES", "SalesEnterprise" },
             { "D365_SALES_ENT", "SalesEnterprise" },
             { "D365_SALES_PRO", "SalesProfessional" },
+            { "DYN365_CUSTOMER_SERVICE_PRO", "CustomerServiceProfessional" },
             { "DYN365_ENTERPRISE_CUSTOMER_SERVICE", "CustomerServiceEnterprise" },
             { "D365_CUSTOMER_SERVICE_ENT", "CustomerServiceEnterprise" },
+            { "DYNAMICS_365_CONTACT_CENTER", "CustomerServiceEnterprise" },
             { "DYN365_ENTERPRISE_FIELD_SERVICE", "FieldService" },
             { "D365_FIELD_SERVICE", "FieldService" },
             { "DYN365_ENTERPRISE_TEAM_MEMBERS", "TeamMembers" },
@@ -126,6 +128,37 @@ namespace LicenceValidator.Core
             { "INTUNE_A", "Ignore:Intune" },
             { "AAD_PREMIUM", "Ignore:EntraIDP1" },
             { "AAD_PREMIUM_P2", "Ignore:EntraIDP2" },
+        };
+
+        // Fallback lookup from well-known Microsoft license SKU GUIDs to their SkuPartNumbers.
+        // Used when the tenant's subscribedSkus API call fails (e.g. missing Directory.Read.All
+        // permission), so that assigned licenses can still be identified and normalized.
+        public static readonly IReadOnlyDictionary<Guid, string> BuiltInSkuIdLookup = new Dictionary<Guid, string>
+        {
+            // Dynamics 365 Sales
+            { new Guid("1e1a282c-9c54-43a2-9310-98ef728faace"), "DYN365_ENTERPRISE_SALES" },
+            { new Guid("2edaa1dc-966d-4475-93d6-8ee8dfd839f4"), "D365_SALES_ENT" },
+            { new Guid("c9700d56-6b8b-4d25-a518-c1c7bfd60f43"), "D365_SALES_PRO" },
+            // Dynamics 365 Customer Service
+            { new Guid("749742bf-0d37-4158-a120-33567104deeb"), "DYN365_ENTERPRISE_CUSTOMER_SERVICE" },
+            { new Guid("1439b6e2-5d59-4873-8c59-d60e2a196e92"), "DYN365_CUSTOMER_SERVICE_PRO" },
+            { new Guid("eb18b715-ea9d-4290-9994-2ebf4b5042d2"), "D365_CUSTOMER_SERVICE_ENT_ATTACH" },
+            // Dynamics 365 Field Service
+            { new Guid("c7d15985-e746-4f01-b113-20b575898250"), "DYN365_ENTERPRISE_FIELD_SERVICE" },
+            { new Guid("a36cdaa2-a806-4b6e-9ae0-28dbd993c20e"), "D365_FIELD_SERVICE_ATTACH" },
+            // Dynamics 365 Team Members
+            { new Guid("6a4a1628-9b9a-424d-bed5-4118f0ede3fd"), "DYN365_ENTERPRISE_TEAM_MEMBERS" },
+            // Dynamics 365 Contact Center
+            { new Guid("39a78eb6-3a8a-4e1e-878a-575a5c8984e7"), "DYNAMICS_365_CONTACT_CENTER" },
+            // Power Apps per-user
+            { new Guid("b30411f5-fea1-4a59-9ad9-3db7c7ead579"), "POWER_APPS_PER_USER" },
+            // Microsoft 365 / Office 365
+            { new Guid("05e9a617-0261-4cee-bb44-138d3ef5d965"), "SPE_E3" },
+            { new Guid("06ebc4ee-1bb5-47dd-8120-11324bc54e06"), "SPE_E5" },
+            { new Guid("6fd2c87f-b296-42f0-b197-1e91e994b900"), "ENTERPRISEPREMIUM" },
+            { new Guid("18181a46-0d4e-45cd-891e-60aabd171b4e"), "ENTERPRISEPACK" },
+            { new Guid("4b9405b0-7788-4568-add1-99614e613b69"), "EXCHANGESTANDARD" },
+            { new Guid("19ec0d23-8335-4cbd-94ac-6050e30712fa"), "EXCHANGEENTERPRISE" },
         };
 
         public RecommendationDecision EvaluateRights(UserEvidence evidence)

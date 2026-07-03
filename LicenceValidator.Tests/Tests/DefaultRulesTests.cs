@@ -94,6 +94,66 @@ namespace LicenceValidator.Tests
             Assert.IsTrue(_ruleset.UsageTableProfiles.Any(x => x.LogicalName == "incident"),
                 "Expected 'incident' in default UsageTableProfiles.");
         }
+
+        [TestMethod]
+        public void DefaultRules_AllRecommendationRules_CapabilityRecognizedByFormatter()
+        {
+            var knownCapabilities = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase)
+            {
+                "SalesFull", "CustomerServiceFull", "FieldServiceFull", "TeamMembers"
+            };
+            foreach (var r in _ruleset.RecommendationRules)
+                Assert.IsTrue(knownCapabilities.Contains(r.Capability),
+                    $"Rule '{r.Name}' has Capability '{r.Capability}' which is not recognized by RecommendationFormatter. Use one of: {string.Join(", ", knownCapabilities)}.");
+        }
+
+        [TestMethod]
+        public void DefaultRules_AllUsageTableProfiles_CapabilityRecognizedByFormatter()
+        {
+            var knownCapabilities = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase)
+            {
+                "SalesFull", "CustomerServiceFull", "FieldServiceFull", "TeamMembers"
+            };
+            foreach (var p in _ruleset.UsageTableProfiles)
+                Assert.IsTrue(knownCapabilities.Contains(p.Capability),
+                    $"UsageTableProfile '{p.LogicalName}' has Capability '{p.Capability}' which is not recognized by RecommendationFormatter. Use one of: {string.Join(", ", knownCapabilities)}.");
+        }
+
+        [TestMethod]
+        public void DefaultRules_OmnichannelRole_MatchesCustomerServiceRule()
+        {
+            var evidence = new UserEvidence { RoleNames = new System.Collections.Generic.List<string> { "CRM_Omnichannel_Supervisor" } };
+            var decision = _ruleset.EvaluateRights(evidence);
+            Assert.IsFalse(decision.IsReviewOnly, "Omnichannel role should match a Customer Service rule.");
+            CollectionAssert.Contains(decision.Capabilities, "CustomerServiceFull");
+        }
+
+        [TestMethod]
+        public void DefaultRules_SalespersonRole_MatchesSalesRule()
+        {
+            var evidence = new UserEvidence { RoleNames = new System.Collections.Generic.List<string> { "Salesperson" } };
+            var decision = _ruleset.EvaluateRights(evidence);
+            Assert.IsFalse(decision.IsReviewOnly);
+            CollectionAssert.Contains(decision.Capabilities, "SalesFull");
+        }
+
+        [TestMethod]
+        public void DefaultRules_FieldServiceRole_MatchesFieldServiceRule()
+        {
+            var evidence = new UserEvidence { RoleNames = new System.Collections.Generic.List<string> { "Field Service - Dispatcher" } };
+            var decision = _ruleset.EvaluateRights(evidence);
+            Assert.IsFalse(decision.IsReviewOnly);
+            CollectionAssert.Contains(decision.Capabilities, "FieldServiceFull");
+        }
+
+        [TestMethod]
+        public void DefaultRules_SalesRule_RecommendedSkuIsNotNeedsReview()
+        {
+            var evidence = new UserEvidence { RoleNames = new System.Collections.Generic.List<string> { "Salesperson" } };
+            var decision = _ruleset.EvaluateRights(evidence);
+            Assert.AreNotEqual("Needs review", decision.RecommendedSku,
+                "RecommendedSku should resolve to a known SKU string, not 'Needs review'.");
+        }
     }
 }
 
