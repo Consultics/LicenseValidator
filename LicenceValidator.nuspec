@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
 	<metadata>
 	<id>Consultics.XrmToolBox.LicenseValidator</id>
-	<version>1.9.5</version>
+	<version>1.9.6</version>
 	<title>License Validator</title>
 	<authors>Martin Jäger, Consultics AG</authors>
 	<owners>Consultics</owners>
@@ -13,7 +13,7 @@
 	<projectUrl>https://github.com/Consultics/LicenseValidator</projectUrl>
 	<description>XrmToolBox plugin that validates Dynamics 365 / Dataverse user license assignments against actual security role rights, usage data and Microsoft Graph API information. Flags underlicensed, overlicensed and inactive users with Excel export.</description>
 	<summary>Validates Dynamics 365 user license assignments against actual rights, usage and Graph data.</summary>
-	<releaseNotes>v1.9.5: Fixed duplicate dictionary keys in BuiltInNormalization causing Type initializer crash when saving rules. Fixed DefaultRules.json not embedded in DLL.</releaseNotes>
+	<releaseNotes>v1.9.6: Fixed RecommendedSku always showing "Needs Review" (capability names in DefaultRules.json now match the formatter). Added built-in SKU GUID lookup so ActualLicenses no longer shows Unmapped:skuid GUIDs when Directory.Read.All is missing. Apps without role restrictions are now included in the Apps column.</releaseNotes>
 	<copyright>Copyright © 2025 Martin Jäger, Consultics AG</copyright>
 	<tags>XrmToolBox Dynamics365 Dataverse License Audit Graph CRM Plugin</tags>
 	<dependencies>

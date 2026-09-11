@@ -5,5 +5,5 @@ using System.Runtime.InteropServices;
 // AssemblyProduct, AssemblyCopyright, ComVisible and Guid from project properties.
 // Only AssemblyVersion / AssemblyFileVersion are kept here.
 
-[assembly: AssemblyVersion("1.9.5.0")]
-[assembly: AssemblyFileVersion("1.9.5.0")]
+[assembly: AssemblyVersion("1.9.6.0")]
+[assembly: AssemblyFileVersion("1.9.6.0")]

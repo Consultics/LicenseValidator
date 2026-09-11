@@ -146,6 +146,61 @@ namespace LicenceValidator.Tests
             Assert.IsNotNull(ruleset);
         }
 
+        // ── BuiltInSkuIdLookup ────────────────────────────────────────────────
+
+        [TestMethod]
+        public void BuiltInSkuIdLookup_NoDuplicateKeys_DoesNotThrowOnInit()
+        {
+            // If the static dictionary has duplicate keys it throws on type init.
+            Assert.IsNotNull(Ruleset.BuiltInSkuIdLookup);
+        }
+
+        [TestMethod]
+        public void BuiltInSkuIdLookup_D365CustomerServiceGuid_MapsToKnownPartNumber()
+        {
+            var guid = new System.Guid("749742bf-0d37-4158-a120-33567104deeb");
+            Assert.IsTrue(Ruleset.BuiltInSkuIdLookup.TryGetValue(guid, out var partNumber));
+            Assert.AreEqual("DYN365_ENTERPRISE_CUSTOMER_SERVICE", partNumber);
+        }
+
+        [TestMethod]
+        public void BuiltInSkuIdLookup_D365SalesGuid_MapsToKnownPartNumber()
+        {
+            var guid = new System.Guid("1e1a282c-9c54-43a2-9310-98ef728faace");
+            Assert.IsTrue(Ruleset.BuiltInSkuIdLookup.TryGetValue(guid, out var partNumber));
+            Assert.AreEqual("DYN365_ENTERPRISE_SALES", partNumber);
+        }
+
+        [TestMethod]
+        public void BuiltInSkuIdLookup_D365FieldServiceGuid_MapsToKnownPartNumber()
+        {
+            var guid = new System.Guid("c7d15985-e746-4f01-b113-20b575898250");
+            Assert.IsTrue(Ruleset.BuiltInSkuIdLookup.TryGetValue(guid, out var partNumber));
+            Assert.AreEqual("DYN365_ENTERPRISE_FIELD_SERVICE", partNumber);
+        }
+
+        [TestMethod]
+        public void BuiltInSkuIdLookup_KnownGuid_PartNumberNormalizesToKnownValue()
+        {
+            // Round-trip: GUID → SkuPartNumber → Normalized capability must not be Unmapped
+            var ruleset = Ruleset.LoadFromJson("{}");
+            foreach (var kvp in Ruleset.BuiltInSkuIdLookup)
+            {
+                var normalized = ruleset.NormalizeAssignedSkus(new[] { kvp.Value });
+                foreach (var n in normalized)
+                    Assert.IsFalse(n.StartsWith("Unmapped:", System.StringComparison.OrdinalIgnoreCase),
+                        $"GUID {kvp.Key} → SkuPartNumber '{kvp.Value}' → normalized '{n}' is still Unmapped. Add '{kvp.Value}' to BuiltInNormalization.");
+            }
+        }
+
+        [TestMethod]
+        public void NormalizeAssignedSkus_D365CustomerServicePro_ReturnsMapped()
+        {
+            var ruleset = Ruleset.LoadFromJson("{}");
+            var result = ruleset.NormalizeAssignedSkus(new[] { "DYN365_CUSTOMER_SERVICE_PRO" });
+            CollectionAssert.Contains(result, "CustomerServiceProfessional");
+        }
+
         // ── EvaluateRights ────────────────────────────────────────────────────
 
         [TestMethod]

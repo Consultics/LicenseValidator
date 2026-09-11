@@ -177,8 +177,12 @@ namespace LicenceValidator.Core
         private static List<AppModuleRecord> ResolveAccessibleApps(IReadOnlyList<AppModuleRecord> mods, IReadOnlyList<AppModuleRoleLink> links, IReadOnlyList<EffectiveRoleRecord> roles)
         {
             var roleIds = roles.Select(x => x.RoleId).Concat(roles.Where(x => x.ParentRootRoleId.HasValue).Select(x => x.ParentRootRoleId.Value)).ToHashSet();
+            // Apps with at least one role requirement: include only if the user holds a matching role.
             var appIds = links.Where(x => roleIds.Contains(x.RoleId)).Select(x => x.AppModuleId).ToHashSet();
-            return mods.Where(x => appIds.Contains(x.AppModuleId)).OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase).ToList();
+            // Apps with no role requirements at all are accessible to every user.
+            var appsWithRequirements = links.Select(x => x.AppModuleId).ToHashSet();
+            return mods.Where(x => appIds.Contains(x.AppModuleId) || !appsWithRequirements.Contains(x.AppModuleId))
+                       .OrderBy(x => x.Name, StringComparer.OrdinalIgnoreCase).ToList();
         }
 
         private async Task<List<UsageTableProfile>> PrepareUsageTablesAsync(CancellationToken ct)

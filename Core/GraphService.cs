@@ -119,7 +119,13 @@ namespace LicenceValidator.Core
                 {
                     var skuId = JsonHelper.GetGuid(license, "skuId");
                     if (!skuId.HasValue) continue;
-                    var partNumber = skuMap.ContainsKey(skuId.Value) ? skuMap[skuId.Value] : "skuid:" + skuId.Value.ToString("D");
+                    string partNumber;
+                    if (skuMap.ContainsKey(skuId.Value))
+                        partNumber = skuMap[skuId.Value];
+                    else if (Ruleset.BuiltInSkuIdLookup.TryGetValue(skuId.Value, out var builtInPartNumber))
+                        partNumber = builtInPartNumber;
+                    else
+                        partNumber = "skuid:" + skuId.Value.ToString("D");
                     snapshot.ActualSkuPartNumbers.Add(partNumber);
                     if (assignmentModes.TryGetValue(skuId.Value, out var mode)) snapshot.AssignmentModeBySkuPartNumber[partNumber] = mode;
                 }
